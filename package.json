@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "web-vitals": "^4.2.4",
+    "reactstrap": "8.0.0"
+  }
+}
