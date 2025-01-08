@@ -10,7 +10,8 @@
     font-family: Arial, sans-serif;
   }
   
-  h1 {
+  .login-container h1 {
+    top:0;
     margin-bottom: 20px;
     color: #333;
   }
@@ -70,7 +71,7 @@
   .show-password {
     margin-top: 5px;
     display: flex;
-    align-items: center;
+    align-items: left;
   }
 
   .show-password label {

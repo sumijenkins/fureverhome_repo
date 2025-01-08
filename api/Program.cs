@@ -18,6 +18,10 @@ services.AddDbContext<UserDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DbConnection"),
         new MySqlServerVersion(new Version(8, 0, 21))));
 
+services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DbConnection"),
+        new MySqlServerVersion(new Version(8, 0, 21))));
+
 services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost",

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate importu
 import "./LoginPage.css";
 
 const LoginPage = () => {
@@ -6,6 +7,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [userName, setUserName] = useState("");
+  const navigate = useNavigate(); // useNavigate hook'u
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,19 +28,26 @@ const LoginPage = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
+        
         console.log("Backend Error:", errorData);
         setError(errorData.message || "Login failed. Please try again.");
       } else {
         const data = await response.json();
+        localStorage.setItem("user", JSON.stringify(data.user));
         console.log("Login successful:", data);
         setError(""); // Clear any previous error
-        // Redirect to a dashboard or homepage after successful login
+
+        setUserName(data.userName);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.user.name);  // Kullanıcı adı kaydedildi
+        localStorage.setItem("email", data.user.email);  // Kullanıcı emaili kaydedildi
+        // Yönlendirme işlemi: Login başarılıysa dashboard'a yönlendir
+        navigate("/dashboard"); // Dashboard sayfasına yönlendir
       }
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
   };
-
 
   return (
     <div className="login-container">

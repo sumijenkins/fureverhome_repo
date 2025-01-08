@@ -6,7 +6,9 @@ import SignUpPage from "./SignUpPage";
 import PetList from "./PetList";
 import Navbar from "./NavBar";
 import HomePage from "./HomePage";
-import Footer from "./Footer";
+//import Footer from "./Footer";
+import UserDashboard from "./UserDashboard";
+import ProfilePage from "./ProfilePage";
 
 
 function App() {
@@ -19,11 +21,11 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/pets" element={<PetList />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </div>
-      <div>
-        <Footer />
-      </div>
+      
     </Router>
   );
 }

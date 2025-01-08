@@ -2,10 +2,17 @@
 
 h2 {
     position: relative;
-    top: 100px;
+    top: 70px;
     font-size: 5rem;
     color: #0A342E;
     /* Adjust for contrast */
+}
+
+h1 {
+    position: relative;
+    top: 70px;
+    font-size: 2rem;
+    color: #000101;
 }
 
 p {

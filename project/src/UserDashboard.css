@@ -1,0 +1,111 @@
+/* Genel ayarlar */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Dashboard genel tasarımı */
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Header */
+.dashboard-header {
+    top:0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #e4b5aa;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+}
+
+.dashboard-header h1{
+    top:0;
+    color: #fff4f4;
+}
+
+.logout-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #d32f2f;
+}
+
+/* Navigasyon */
+.dashboard-nav {
+    top:0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.dashboard-nav a {
+    top:0;
+    text-decoration: none;
+    color: #666666;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: 2px solid #a3b899;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+
+.dashboard-nav a:hover {
+    top:0;
+    background-color: #a3b899;
+    color: white;
+}
+
+/* Ana içerik */
+.dashboard-main {
+    width: 100%;
+    max-width: 800px;
+    
+    padding: 20px;
+    border-radius: 8px;
+    
+}
+
+.animals-section,
+.applications-section {
+    margin-bottom: 20px;
+}
+
+.animals-section ul,
+.applications-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.animals-section li,
+.applications-section li {
+    background-color: #fff4f4;
+    color:#c86767;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.animals-section h2,
+.applications-section h2{
+    color:#a3b899;
+    top:5px;
+    font-size: 3rem;
+
+}
