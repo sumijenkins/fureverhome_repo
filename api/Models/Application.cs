@@ -1,24 +1,25 @@
-using System.ComponentModel.DataAnnotations;
+using api.Models;
 
-namespace api.Models{
-    public class Application{
-        [Key]
+public enum ApplicationStatus
+{
+    Pending,
+    Approved,
+    Rejected
+}
+namespace api.Models
+{
+    public class Application
+    {
         public int Id { get; set; }
-
-        [Required]
         public int UserId { get; set; }
-
-        [Required]
         public int PetId { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Status { get; set; } = "Pending";
-
-        [Required]
+        public ApplicationStatus Status { get; set; } = ApplicationStatus.Pending;
         public DateTime ApplicationDate { get; set; } = DateTime.UtcNow;
+        public string? Message { get; set; }
 
-        public User User { get; set; }
-        public Pet Pet { get; set; }
+        // Navigation properties
+        public Pet? Pet { get; set; }
+        public User? User { get; set; }
     }
+
 }

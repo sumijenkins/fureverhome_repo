@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using api.Data;
+
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.Data;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace api.Controllers{
 
@@ -11,8 +12,8 @@ namespace api.Controllers{
     [Route("api/[Controller]")]
     public class UsersController : ControllerBase{
 
-        private readonly UserDbContext _context;
-        public UsersController (UserDbContext context){
+        private readonly ApplicationDbContext _context;
+        public UsersController (ApplicationDbContext context){
             _context = context;
         }
         [HttpGet]
@@ -117,6 +118,75 @@ namespace api.Controllers{
 
             return Ok(new { Message = "Login successful", User = user });
         }
+
+        [HttpGet("check-auth")]
+        public IActionResult CheckAuth()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            // Token geçerli mi kontrol et
+            if (string.IsNullOrEmpty(token) || !ValidateToken(token))
+            {
+                return Ok(new { isAuthenticated = false });
+            }
+
+            return Ok(new { isAuthenticated = true });
+        }
+
+        // Token doğrulama fonksiyonu
+        private bool ValidateToken(string token)
+        {
+            try
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+                if (jsonToken == null)
+                    return false;
+
+                var expirationDate = jsonToken.ValidTo;
+                if (expirationDate < DateTime.UtcNow)
+                {
+                    return false; // Token süresi geçmiş
+                }
+
+                return true; // Token geçerli
+            }
+            catch (Exception)
+            {
+                return false; // Hata durumunda geçersiz kabul et
+            }
+        }
+
+        [HttpPost("{userId}/add-pet")]
+        public async Task<IActionResult> AddPet(int userId, [FromBody] Pet pet)
+        {
+            // Kullanıcıyı doğrula
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+
+            // Pet ekle ve kullanıcıya bağla
+            pet.OwnerId = userId;
+            _context.Pets.Add(pet);
+
+            // Kullanıcının pet listesini güncelle
+            if (user.Pets == null)
+            {
+                user.Pets = new List<Pet>();
+            }
+           
+            user.Pets.Add(pet);
+            _context.Attach(user); // Attach the user object
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetById), new { id = pet.Id }, pet);
+        }
+
+
+
+
 
     }
 }

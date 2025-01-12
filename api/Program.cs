@@ -1,4 +1,3 @@
-using api.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,30 +9,29 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var services = builder.Services;
-services.AddDbContext<PetDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DbConnection"),
-        new MySqlServerVersion(new Version(8, 0, 21))));
 
-services.AddDbContext<UserDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DbConnection"),
-        new MySqlServerVersion(new Version(8, 0, 21))));
-
+// Configure the DbContext to use MySQL
 services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DbConnection"),
         new MySqlServerVersion(new Version(8, 0, 21))));
 
+// Configure CORS
 services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost",
         builder => builder.WithOrigins("http://localhost:3000")
+                          .AllowAnyOrigin()
                           .AllowAnyMethod()
                           .AllowAnyHeader());
 });
+services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
 
-builder.Services.AddMySqlDataSource(builder.Configuration.GetConnectionString("DbConnection")!);
 
-
-services.AddControllers();
+//services.AddControllers();
 services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -46,16 +44,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
     });
 }
 
-//services.AddControllers(
-//options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
-
-
-app.UseCors("AllowLocalhost");
-app.UseCors("AllowReactApp");
+app.UseCors("AllowLocalhost");  // Make sure this matches the policy name
 app.UseRouting();
 app.MapControllers();
 

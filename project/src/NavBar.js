@@ -1,21 +1,38 @@
-//import React from "react";
 import React, { useState, useEffect } from "react";
-
-import PetsList from "./PetList";
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     useEffect(() => {
-        // localStorage'dan token'ı kontrol et
+        // Sayfa yüklendiğinde localStorage'dan token'ı kontrol et
         const token = localStorage.getItem("token");
         if (token) {
-            setIsLoggedIn(true); // Eğer token varsa, giriş yapılmış kabul et
+            setIsLoggedIn(true); // Token varsa giriş yapılmış kabul et
+        } else {
+            setIsLoggedIn(false); // Token yoksa giriş yapılmamış kabul et
         }
-    }, []);
+
+        // localStorage'daki değişiklikleri dinle
+        const handleStorageChange = () => {
+            const token = localStorage.getItem("token");
+            setIsLoggedIn(!!token); // Token varsa true, yoksa false yap
+        };
+
+        // 'storage' event listener'ı ekleyin
+        window.addEventListener("storage", handleStorageChange);
+
+        // Cleanup: component unmount olduğunda event listener'ı kaldırın
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
+    }, []); // Yalnızca component mount olduğunda çalışacak
+
+    // Çıkış yapıldığında token'ı sil ve durumu güncelle
     const handleLogout = () => {
-        localStorage.removeItem("token"); // Token'ı localStorage'dan sil
-        setIsLoggedIn(false); // Giriş durumunu güncelle
+        localStorage.removeItem("token");
+        setIsLoggedIn(false); // Giriş durumu güncellenir
     };
+
     return (
         <nav style={styles.navbar}>
             <h1 style={styles.title}>Furever Home</h1>
@@ -38,7 +55,6 @@ const Navbar = () => {
                     </>
                 )}
             </ul>
-
         </nav>
     );
 };

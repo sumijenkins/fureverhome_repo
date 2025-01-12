@@ -1,4 +1,4 @@
-using api.Data;
+
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,12 +7,13 @@ using Microsoft.EntityFrameworkCore;
 [Route("api/[controller]")]
 public class PetsController : ControllerBase
 {
-    private readonly PetDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public PetsController(PetDbContext context)
+    public PetsController(ApplicationDbContext context)
     {
         _context = context;
     }
+
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Pet>>> GetPets()
@@ -65,4 +66,10 @@ public class PetsController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+   
+
+
+
+
 }

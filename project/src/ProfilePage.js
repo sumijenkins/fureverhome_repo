@@ -1,36 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const ProfilePage = () => {
     const [user, setUser] = useState(null);
+    const [applications, setApplications] = useState([]);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            // Burada token ile backend'den kullanıcı bilgilerini alabilirsiniz
-            fetch("http://localhost:5000/api/users/profile", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    setUser(data.user); // Kullanıcı bilgisini state'e kaydediyoruz
-                })
-                .catch((error) => console.error("Error fetching user data:", error));
-        }
-    }, []);
+        const fetchUser = async () => {
+            const response = await fetch("/api/users/current");
+            const data = await response.json();
+            setUser(data);
+        };
+
+        const fetchApplications = async () => {
+            const response = await fetch(`/api/applications?userId=${user.id}`);
+            const data = await response.json();
+            setApplications(data);
+        };
+
+        fetchUser();
+        if (user) fetchApplications();
+    }, [user]);
 
     return (
         <div>
-            {user ? (
-                <div>
-                    <h1>My Profile</h1>
-                    <p>Name: {user.name}</p>
-                    <p>Email: {user.email}</p>
-                </div>
-            ) : (
-                <h1>Loading profile...</h1>
-            )}
+            <h2>Welcome, {user ? user.name : "Loading..."}</h2>
+            <h3>Your Adoption Applications</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pet Name</th>
+                        <th>Status</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {applications.map((application) => (
+                        <tr key={application.id}>
+                            <td>{application.pet.name}</td>
+                            <td>{application.status}</td>
+                            <td>{application.message}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };
