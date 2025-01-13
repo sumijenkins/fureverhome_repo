@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "./comp-styles.css";
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -34,24 +34,24 @@ const Navbar = () => {
     };
 
     return (
-        <nav style={styles.navbar}>
-            <h1 style={styles.title}>Furever Home</h1>
-            <ul style={styles.navLinks}>
-                <li><a href="/" style={styles.link}>Home</a></li>
-                <li><a href="/about" style={styles.link}>About</a></li>
-                <li><a href="/pets" style={styles.link}>Pets</a></li>
-                <li><a href="/contact" style={styles.link}>Contact</a></li>
+        <nav className="navbar">
+            <h1 className="navbar-title">Furever Home</h1>
+            <ul className="navbar-links">
+                <li><a href="/" >Home</a></li>
+                <li><a href="/about" >About</a></li>
+                <li><a href="/pets" >Pets</a></li>
+                <li><a href="/contact" >Contact</a></li>
             </ul>
-            <ul style={styles.navLinks}>
+            <ul className="navbar-links">
                 {isLoggedIn ? (
                     <>
-                        <li><a href="/profile" style={styles.link}>My Profile</a></li>
-                        <li><button onClick={handleLogout}>Logout</button></li>
+                        <li><a href="/profile">My Profile</a></li>
+                        <li><button className="" onClick={handleLogout}>Logout</button></li>
                     </>
                 ) : (
                     <>
-                        <li><a href="/login" style={styles.link}>Login</a></li>
-                        <li><a href="/signup" style={styles.link}>Sign Up</a></li>
+                        <li><a href="/login" >Login</a></li>
+                        <li><a href="/signup" >Sign Up</a></li>
                     </>
                 )}
             </ul>
@@ -59,34 +59,6 @@ const Navbar = () => {
     );
 };
 
-const styles = {
-    navbar: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px 20px",
-        backgroundColor: "#a3b899",
-        color: "#fff",
-    },
-    title: {
-        display: "flex",
-        margin: 0,
-        top: 0,
-        padding: 0,
-        color: "#fff",
-        textDecoration: "none"
-    },
-    navLinks: {
-        listStyle: "none",
-        display: "flex",
-        margin: 0,
-        padding: 0,
-    },
-    link: {
-        color: "#fff",
-        textDecoration: "none",
-        marginLeft: "15px",
-    },
-};
+
 
 export default Navbar;

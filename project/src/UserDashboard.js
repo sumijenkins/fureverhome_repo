@@ -82,26 +82,11 @@ const UserDashboard = () => {
                 <a href="/pets">All Pets</a>
                 <a href="/favorites">My Favorites</a>
                 <a href="/applications">My Applications</a>
+                <a href="/addpet">Add Pet</a>
+                <a href="/received-applications">Received Applications</a>
+
             </nav>
             <main className="dashboard-main">
-                <section className="animals-section">
-                    <h2>Pets to Adopt</h2>
-                    <ul>
-                        {pet.map((pet) => (
-                            <li key={pet.id}>{pet.name} ({pet.breed})</li>
-                        ))}
-                    </ul>
-                </section>
-                <section className="applications-section">
-                    <h2>Application Status</h2>
-                    <ul>
-                        {applications.map((app) => (
-                            <li key={app.id}>
-                                {app.petName}: {app.status}
-                            </li>
-                        ))}
-                    </ul>
-                </section>
                 <section className="add-pet-section">
                     <h2>Add a New Pet</h2>
                     {error && <p style={{ color: "red" }}>{error}</p>}
@@ -160,6 +145,7 @@ const styles = {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
+        backgroundAttachment: 'fixed',
         height: "100vh",
         color: "#fff",
     },

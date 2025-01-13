@@ -10,6 +10,8 @@ import UserDashboard from "./UserDashboard";
 import ProfilePage from "./ProfilePage";
 import PetApplicationsList from "./PetApplicationList";  // Başvuru listesi bileşeni
 import PetApplicationForm from "./PetApplicationForm";    // Başvuru formu bileşeni
+import MyApplications from "./MyApplications";
+import ReceivedApplications from "./ReceivedApplications";
 
 function App() {
   return (
@@ -23,8 +25,9 @@ function App() {
           <Route path="/pets" element={<PetList />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/applications" element={<PetApplicationsList />} />  {/* Başvuru listesi sayfası */}
           <Route path="/apply" element={<PetApplicationForm />} />         {/* Başvuru formu sayfası */}
+          <Route path="/applications" element={<MyApplications />} />
+          <Route path="/received-applications" element={<ReceivedApplications />} />
         </Routes>
       </div>
     </Router>

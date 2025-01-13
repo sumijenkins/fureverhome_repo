@@ -1,0 +1,118 @@
+.pets-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+.pets-container h1 {
+    top: 0;
+    font-size: 2.5rem;
+    color: #583510;
+    margin-bottom: 20px;
+}
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Individual pet card */
+.pet-card {
+    background-color: #eae7e6;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.pet-image {
+    width: 200px;
+    /* Set a fixed width */
+    height: 200px;
+    /* Set a fixed height */
+    object-fit: cover;
+    /* Ensures the image covers the area without distorting */
+    border-radius: 40%;
+    /* Makes the image round */
+    border: 3px solid #ddd;
+    /* Adds a border around the image */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Adds a subtle shadow */
+    margin-bottom: 10px;
+    /* Adds space below the image */
+}
+.pet-image:hover {
+    transform: scale(1.05);
+    /* Slightly enlarges the image on hover */
+    transition: transform 0.3s ease;
+    /* Smooth transition for scaling */
+}
+
+
+
+.animals-section ul{
+    list-style-type: none;
+    padding: 0;
+}
+
+.animals-section ul li {
+    background-color: #ffe4b1;
+    color: #583510;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.pet-card h2 {
+    color: #c86767;
+    top: 0px;
+    font-size: 2rem;
+
+}
+
+.animals-section h1 {
+    color: #583510;
+    top: 0px;
+    font-size: 3rem;
+
+}
+.pet-card p {
+    color: #583510;
+    top: 0px;
+    font-size: 1rem;
+
+}
+
+
+
+.pet-card button {
+    background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+    border: 0;
+    top: 0px;
+    border-radius: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 2.5;
+    outline: transparent;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .2s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+}
+
+.button:not([disabled]):focus {
+    box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+
+.button:not([disabled]):hover {
+    box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}

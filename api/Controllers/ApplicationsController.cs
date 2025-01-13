@@ -80,6 +80,39 @@ namespace api.Controllers
             return Ok(await query.ToListAsync());
         }
 
-        // Add other methods here...
+        // In your ApplicationsController
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Application>>> GetApplicationsByUser(int userId)
+        {
+            var applications = await _context.Applications
+                .Where(a => a.UserId == userId)
+                .Include(a => a.Pet)
+                .ToListAsync();
+
+            if (applications == null || !applications.Any())
+            {
+                return NotFound(new { message = "No applications found for this user." });
+            }
+
+            return Ok(applications);  // This should return a valid JSON array
+        }
+
+        [HttpGet("received-applications/{userId}")]
+        public async Task<ActionResult<IEnumerable<Application>>> GetReceivedApplications(int userId)
+        {
+            var applications = await _context.Applications
+                .Where(a => a.Pet.OwnerId == userId)  // Filter applications for pets owned by the user
+                .Include(a => a.User)  // Include user data to show who applied
+                .Include(a => a.Pet)   // Include pet data
+                .ToListAsync();
+
+            if (applications == null || !applications.Any())
+            {
+                return NotFound(new { message = "No applications received for your pets." });
+            }
+
+            return Ok(applications);  // Return a valid JSON array of received applications
+        }
+
     }
 }

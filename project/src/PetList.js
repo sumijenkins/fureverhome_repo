@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import "./PetList.css";
+import { Link } from 'react-router-dom';
 
 const PetsList = () => {
     const [pets, setPets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
+    const defaultImage = "/images/default-pfp.jpg";
 
     useEffect(() => {
         // Fetch pets data
@@ -35,8 +38,6 @@ const PetsList = () => {
         }
     }, []);
 
-    
-
     const handleAdopt = async (petId) => {
         if (!user) {
             alert("You need to be logged in to apply for adoption.");
@@ -56,7 +57,6 @@ const PetsList = () => {
                     "Content-Type": "application/json",
                 },
             });
-
 
             if (response.ok) {
                 alert("Application sent successfully!");
@@ -82,23 +82,31 @@ const PetsList = () => {
     }
 
     return (
-        <div>
-            <h1>Pets for Adoption</h1>
-            {error && <p>Error: {error}</p>}
-            <ul>
-                {pets.length === 0 ? (
-                    <p>No pets available for adoption.</p>
-                ) : (
-                    pets.map((pet) => (
-                        <li key={pet.id}>
-                            <h2>{pet.name}</h2>
-                            <p>Age: {pet.age}</p>
-                            <p>Breed: {pet.breed}</p>
-                            <button onClick={() => handleAdopt(pet.id)}>Apply for Adoption</button>
-                        </li>
-                    ))
-                )}
-            </ul>
+        <div className='pets-container'>
+            <h1 className="pets-title">Pets for Adoption</h1>
+            <div className="pets-grid">
+                {pets.map((pet) => (
+                    <div className="pet-card" key={pet.id}>
+                        <img
+                            src={`http://localhost:3000${pet.pictureUrl || '/images/default-pfp.jpg'}`}
+                            alt={pet.name}
+                            className="pet-image"
+                        />
+
+
+                        <h2 className="pet-name">{pet.name}</h2>
+                        <p className="pet-details">Breed: {pet.breed}</p>
+                        <p className="pet-details">Age: {pet.age}</p>
+                        <p className='pet-details'>{pet.description}</p>
+                        <p className="pet-details">
+                            Owner: <span>{pet.ownerName}</span>
+                            <Link to={`/profile/${pet.ownerId}`}> (View Profile)</Link>
+                        </p>
+
+                        <button className="button" onClick={() => handleAdopt(pet.id)}>Adopt</button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

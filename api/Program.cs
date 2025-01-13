@@ -48,6 +48,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseStaticFiles(); //use photos
 app.UseCors("AllowLocalhost");  // Make sure this matches the policy name
 app.UseRouting();
 app.MapControllers();

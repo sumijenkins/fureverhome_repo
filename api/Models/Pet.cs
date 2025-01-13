@@ -13,6 +13,7 @@ namespace api.Models
         public string? Description { get; set; }
         public bool IsAdopted { get; set; }
         public int? OwnerId { get; set; }  // Sahip ID'si
+        public string? PictureUrl { get; set; }
 
         [JsonIgnore]
         public User? Owner { get; set; }
