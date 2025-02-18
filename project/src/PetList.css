@@ -23,6 +23,14 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 15px;
     text-align: center;
+    display: flex;
+    /* Use flexbox for centering */
+    flex-direction: column;
+    /* Stack children vertically */
+    align-items: center;
+    /* Center children horizontally */
+    justify-content: center;
+    /* Center children vertically */
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
@@ -33,8 +41,8 @@
     /* Set a fixed height */
     object-fit: cover;
     /* Ensures the image covers the area without distorting */
-    border-radius: 40%;
-    /* Makes the image round */
+    border-radius: 10px;
+    /* Optional: make the image corners rounded */
     border: 3px solid #ddd;
     /* Adds a border around the image */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -81,7 +89,7 @@
     color: #583510;
     top: 0px;
     font-size: 1rem;
-
+    margin : 1px;
 }
 
 
@@ -89,7 +97,7 @@
 .pet-card button {
     background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
     border: 0;
-    top: 0px;
+    top: 3px;
     border-radius: 12px;
     color: #FFFFFF;
     cursor: pointer;

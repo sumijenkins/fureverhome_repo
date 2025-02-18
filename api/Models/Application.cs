@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using api.Models;
 
 public enum ApplicationStatus
@@ -17,8 +18,12 @@ namespace api.Models
         public DateTime ApplicationDate { get; set; } = DateTime.UtcNow;
         public string? Message { get; set; }
 
+        public string? PetName { get; set; }
+
         // Navigation properties
+        [JsonIgnore]
         public Pet? Pet { get; set; }
+        [JsonIgnore]
         public User? User { get; set; }
     }
 

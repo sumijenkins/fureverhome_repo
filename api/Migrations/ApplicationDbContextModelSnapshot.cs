@@ -38,6 +38,9 @@ namespace api.Migrations
                     b.Property<int>("PetId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PetName")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 

@@ -54,29 +54,55 @@ public class PetsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Pet>> CreatePet([FromForm]Pet pet, IFormFile picture)
+    public async Task<ActionResult<Pet>> CreatePet([FromForm] Pet pet, IFormFile picture)
     {
-
         if (picture != null)
         {
-            // Define the folder path to save the image
-            var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "project", "public", "images");
-            var filePath = Path.Combine(imagesFolder, picture.FileName);
-
-            // Save the image to the folder
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                await picture.CopyToAsync(stream);
-            }
+                // Define the folder path to save the image
+                var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "project", "public", "images");
 
-            // Store the relative URL in the database (e.g., "/images/pet123.jpg")
-            pet.PictureUrl = "/images/" + picture.FileName;
+                // Check if the folder exists, and create it if not
+                if (!Directory.Exists(imagesFolder))
+                {
+                    Console.WriteLine("Images folder does not exist. Creating folder...");
+                    Directory.CreateDirectory(imagesFolder);
+                }
+
+                // Generate a unique file name using a GUID and preserve the file extension
+                var fileExtension = Path.GetExtension(picture.FileName); // Get the file extension (e.g., .jpg)
+                var uniqueFileName = Guid.NewGuid().ToString() + fileExtension; // Generate a unique name
+
+                // Define the full file path
+                var filePath = Path.Combine(imagesFolder, uniqueFileName);
+                Console.WriteLine($"Saving file to: {filePath}");
+
+                // Save the image to the folder
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await picture.CopyToAsync(stream);
+                    Console.WriteLine("Image saved successfully.");
+                }
+
+                // Store the relative URL in the database (e.g., "/images/unique-file-name.jpg")
+                pet.PictureUrl = "/images/" + uniqueFileName;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine("Error saving image: " + ex.Message);
+                return BadRequest("Error occurred while saving the image.");
+            }
         }
-        
+
         _context.Pets.Add(pet);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetPet), new { id = pet.Id }, pet);
     }
+
+
+
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePet(int id, Pet pet)

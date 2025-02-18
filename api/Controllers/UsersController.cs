@@ -5,6 +5,8 @@ using api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.Data;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace api.Controllers{
 
@@ -21,14 +23,29 @@ namespace api.Controllers{
         {
             return await _context.Users.ToListAsync();
         }
-        
-        
+
+
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetById([FromRoute] int id ){
-            var users = await _context.Users.FindAsync(id);
-            if (users == null) return NotFound();
-            return Ok(users);
+        public async Task<ActionResult> GetById([FromRoute] int id)
+        {
+            try
+            {
+                var users = await _context.Users
+                    .Include(u => u.Applications)
+                    .Include(u => u.Pets)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+
+                if (users == null)
+                    return NotFound(new { error = "User not found" });
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while fetching the user.", details = ex.Message });
+            }
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] User user)
@@ -184,6 +201,33 @@ namespace api.Controllers{
             return CreatedAtAction(nameof(GetById), new { id = pet.Id }, pet);
         }
 
+        [HttpGet("me")]
+        [Authorize] // Ensure the user is authenticated
+        public async Task<ActionResult<User>> GetMyProfile()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "Invalid user token" });
+            }
+
+            var user = await _context.Users
+                .Include(u => u.Pets) // Include related pets if needed
+                .FirstOrDefaultAsync(u => u.Id == int.Parse(userId));
+
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            return Ok(new
+            {
+                user.Name,
+                user.Email,
+                Pets = user.Pets?.Select(p => new { p.Id, p.Name }).ToList() // Optionally include pets
+            });
+        }
 
 
 

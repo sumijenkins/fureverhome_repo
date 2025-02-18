@@ -1,5 +1,6 @@
-button {
-    margin: 0px; 
+.navbar-links button {
+    top: 0px;
+    margin: 2px; 
     display: inline-block;
     vertical-align: middle;
     background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
@@ -11,7 +12,7 @@ button {
     font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
     font-weight: 500;
-    line-height: 2;
+    line-height: 1.5;
     outline: transparent;
     padding: 0 1rem;
     text-align: center;

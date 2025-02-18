@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate importu
+import { useNavigate } from "react-router-dom"; // useNavigate import
 import "./LoginPage.css";
 
 const LoginPage = () => {
@@ -7,8 +7,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [userName, setUserName] = useState("");
-  const navigate = useNavigate(); // useNavigate hook'u
+  const navigate = useNavigate(); // useNavigate hook
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,26 +22,24 @@ const LoginPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }), // Verilerin doğru şekilde gönderildiğinden emin olun
+        body: JSON.stringify({ email, password }), // Ensure the correct data is sent
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        
         console.log("Backend Error:", errorData);
         setError(errorData.message || "Login failed. Please try again.");
       } else {
         const data = await response.json();
-        localStorage.setItem("user", JSON.stringify(data.user));
         console.log("Login successful:", data);
         setError(""); // Clear any previous error
 
-        setUserName(data.userName);
+        // Store token and user info in localStorage
         localStorage.setItem("token", data.token);
-        localStorage.setItem("username", data.user.name);  // Kullanıcı adı kaydedildi
-        localStorage.setItem("email", data.user.email);  // Kullanıcı emaili kaydedildi
-        // Yönlendirme işlemi: Login başarılıysa dashboard'a yönlendir
-        navigate("/dashboard"); // Dashboard sayfasına yönlendir
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Redirect to dashboard after successful login
+        navigate("/dashboard");
       }
     } catch (error) {
       setError("An error occurred. Please try again later.");

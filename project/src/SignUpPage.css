@@ -1,5 +1,5 @@
 /* SignUpPage.css */
-.signup-container {
+  .signup-container {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
@@ -10,7 +10,8 @@
     font-family: Arial, sans-serif;
   }
   
-  h1 {
+  .signup-container h1  {
+    top: 0px;
     margin-bottom: 20px;
     color: #333;
   }
@@ -20,10 +21,11 @@
     text-align: left;
   }
   
-  label {
+  .form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    
   }
   
   input {
@@ -69,7 +71,7 @@
   }
 
   .show-password {
-    margin-top: 5px;
+    margin-top: 0px;
     display: flex;
     align-items: center;
   }

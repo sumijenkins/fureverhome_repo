@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./MyApplications.css";
-
+import "./PetList.css";
+import { Link } from 'react-router-dom';
 const MyApplications = () => {
     const [applications, setApplications] = useState([]);
     const [error, setError] = useState("");
@@ -19,30 +19,59 @@ const MyApplications = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((res) => res.json())
-            .then((data) => setApplications(data))
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.status === 404) {
+                        // Handle no applications found
+                        return [];
+                    }
+                    throw new Error("Failed to fetch applications.");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                if (data.length === 0) {
+                    setError("You have not applied for any pets yet.");
+                } else {
+                    setApplications(data);
+                }
+            })
             .catch((err) => {
                 console.error("Error fetching applications:", err);
                 setError("Failed to load applications.");
             });
+    
     }, []);
 
     return (
-        <div className="applications-container">
+        <div className="pets-container">
             <h1>My Applications</h1>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <div className="applications-list">
-                {applications.length === 0 ? (
-                    <p>You have no applications yet.</p>
-                ) : (
-                    applications.map((application) => (
-                        <div className="application-card" key={application.id}>
-                            <h3>Pet: {application.petName}</h3>
-                            <p>Status: {application.status}</p>
-                            <p>Message: {application.message}</p>
-                        </div>
-                    ))
-                )}
+            {error && <p>{error}</p>}
+            <div className="pets-grid">
+                {applications.map((application) => (
+                    <div key={application.id} className="pet-card">
+                       
+                        <img
+                            src={`http://localhost:5000${application.pet?.pictureUrl || "/images/default-pfp.jpg"}`}
+                            alt={application.pet?.name || "Unknown Pet"}
+                            className="pet-image"
+                        />
+                        <h2 className="pet-name">{application.pet?.name || "Unknown Pet"}</h2>
+                        <p className="pet-details">Breed: {application.pet?.breed || "Unknown Breed"}</p>
+                        <p className="pet-details">Age: {application.pet?.age || "Unknown Age"}</p>
+                        
+                        <Link to={`/profile/${application.pet.ownerId}`}> (View Owner)</Link>
+                        <p className="pet-details">Message: {application.message || "No message provided."}</p>
+                        <p className="pet-details">
+                            Status:{" "}
+                            {application.status === 0
+                                ? "Waiting"
+                                : application.status === 1
+                                    ? "Approved"
+                                    : "Rejected"}
+                        </p>
+                    </div>
+                ))}
             </div>
         </div>
     );

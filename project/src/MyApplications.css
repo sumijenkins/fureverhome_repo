@@ -1,7 +1,18 @@
 .applications-container {
     text-align: center;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #eae7e6;
+}
+.applications-container h1 {
+    top: 0;
+    font-size: 2.5rem;
+    color: #583510;
+    margin-bottom: 20px;
+}
+
+.application-card h3 {
+    font-size: 2rem;
+    color: #e84a5f;
 }
 
 .applications-list {
@@ -10,8 +21,8 @@
     align-items: center;
 }
 
-.application-card {
-    background-color: #fff;
+.applications-container application-card {
+    background-color: #cfe2f3;
     padding: 20px;
     margin: 10px;
     border-radius: 8px;

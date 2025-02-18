@@ -5,13 +5,14 @@ import SignUpPage from "./SignUpPage";
 import PetList from "./PetList";
 import Navbar from "./NavBar";
 import HomePage from "./HomePage";
-// import Footer from "./Footer";
 import UserDashboard from "./UserDashboard";
 import ProfilePage from "./ProfilePage";
-import PetApplicationsList from "./PetApplicationList";  // Başvuru listesi bileşeni
-import PetApplicationForm from "./PetApplicationForm";    // Başvuru formu bileşeni
 import MyApplications from "./MyApplications";
 import ReceivedApplications from "./ReceivedApplications";
+import AddPet from "./AddPet";
+import MyProfile from "./MyProfile";
+import About from "./About";
+import Contact from "./Contact";
 
 function App() {
   return (
@@ -24,10 +25,13 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/pets" element={<PetList />} />
           <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/apply" element={<PetApplicationForm />} />         {/* Başvuru formu sayfası */}
+          <Route path="/profile/:id" element={<ProfilePage />} />
+          <Route path="/my-profile" element={<MyProfile />} />
+          <Route path="/addpet" element={<AddPet />} />  
           <Route path="/applications" element={<MyApplications />} />
-          <Route path="/received-applications" element={<ReceivedApplications />} />
+          <Route path="/received-applications/:id" element={<ReceivedApplications />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>
     </Router>

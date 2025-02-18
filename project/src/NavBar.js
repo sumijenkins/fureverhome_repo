@@ -1,64 +1,68 @@
 import React, { useState, useEffect } from "react";
 import "./comp-styles.css";
+import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate(); // Use the useNavigate hook
 
     useEffect(() => {
-        // Sayfa yüklendiğinde localStorage'dan token'ı kontrol et
+        // Check localStorage for token on component mount
         const token = localStorage.getItem("token");
-        if (token) {
-            setIsLoggedIn(true); // Token varsa giriş yapılmış kabul et
-        } else {
-            setIsLoggedIn(false); // Token yoksa giriş yapılmamış kabul et
-        }
+        setIsLoggedIn(!!token); // Set login state based on token presence
 
-        // localStorage'daki değişiklikleri dinle
+        // Listen for changes to localStorage
         const handleStorageChange = () => {
             const token = localStorage.getItem("token");
-            setIsLoggedIn(!!token); // Token varsa true, yoksa false yap
+            setIsLoggedIn(!!token); // Update login state
         };
 
-        // 'storage' event listener'ı ekleyin
         window.addEventListener("storage", handleStorageChange);
 
-        // Cleanup: component unmount olduğunda event listener'ı kaldırın
+        // Cleanup: Remove event listener on component unmount
         return () => {
             window.removeEventListener("storage", handleStorageChange);
         };
-    }, []); // Yalnızca component mount olduğunda çalışacak
+    }, []);
 
-    // Çıkış yapıldığında token'ı sil ve durumu güncelle
+    // Handle logout
     const handleLogout = () => {
         localStorage.removeItem("token");
-        setIsLoggedIn(false); // Giriş durumu güncellenir
+        setIsLoggedIn(false); // Update login state
+        navigate("/"); // Navigate to home page
     };
 
     return (
         <nav className="navbar">
-            <h1 className="navbar-title">Furever Home</h1>
+            <h1 className="navbar-title">FurEverHome</h1>
             <ul className="navbar-links">
-                <li><a href="/" >Home</a></li>
-                <li><a href="/about" >About</a></li>
-                <li><a href="/pets" >Pets</a></li>
-                <li><a href="/contact" >Contact</a></li>
+                {isLoggedIn ? (
+                    <>
+                        <li><a href="/dashboard">Home</a></li>
+                    </>
+                ) : (
+                    <>
+                        <li><a href="/" >Home</a></li>
+                    </>
+                )}
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
             </ul>
             <ul className="navbar-links">
                 {isLoggedIn ? (
                     <>
-                        <li><a href="/profile">My Profile</a></li>
-                        <li><button className="" onClick={handleLogout}>Logout</button></li>
+                        <li><a href="/my-profile">My Profile</a></li>
+                        <li><button className="button" onClick={handleLogout}>Logout</button></li>
                     </>
                 ) : (
                     <>
-                        <li><a href="/login" >Login</a></li>
-                        <li><a href="/signup" >Sign Up</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/signup">Sign Up</a></li>
                     </>
                 )}
             </ul>
         </nav>
     );
 };
-
-
 
 export default Navbar;

@@ -48,6 +48,7 @@ const styles = {
         height: "100vh", // Makes the container fill the viewport height
         color: "#fff", // Adjust text color for better contrast
     },
+    
    
 };
 

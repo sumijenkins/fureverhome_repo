@@ -10,6 +10,14 @@ const PetsList = () => {
     const defaultImage = "/images/default-pfp.jpg";
 
     useEffect(() => {
+
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            setUser(storedUser);  // Set user state if user exists
+        } else {
+            setError("User is not logged in.");
+            setLoading(false);
+        }
         // Fetch pets data
         fetch('http://localhost:5000/api/pets')
             .then((response) => {
@@ -19,7 +27,10 @@ const PetsList = () => {
                 return response.json();
             })
             .then((data) => {
-                setPets(data);
+                // Filter out adopted pets
+                const availablePets = data.filter((pet) => !pet.isAdopted && pet.ownerId !== storedUser.id);
+                
+                setPets(availablePets);
                 setLoading(false);
             })
             .catch((err) => {
@@ -29,13 +40,7 @@ const PetsList = () => {
             });
 
         // Fetch user data from localStorage (or API)
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        if (storedUser) {
-            setUser(storedUser);  // Set user state if user exists
-        } else {
-            setError("User is not logged in.");
-            setLoading(false);
-        }
+        
     }, []);
 
     const handleAdopt = async (petId) => {
@@ -88,12 +93,10 @@ const PetsList = () => {
                 {pets.map((pet) => (
                     <div className="pet-card" key={pet.id}>
                         <img
-                            src={`http://localhost:3000${pet.pictureUrl || '/images/default-pfp.jpg'}`}
+                            src={`http://localhost:5000${pet.pictureUrl || '/images/default-pfp.jpg'}`}
                             alt={pet.name}
                             className="pet-image"
                         />
-
-
                         <h2 className="pet-name">{pet.name}</h2>
                         <p className="pet-details">Breed: {pet.breed}</p>
                         <p className="pet-details">Age: {pet.age}</p>
